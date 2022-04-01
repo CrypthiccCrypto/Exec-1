@@ -6,10 +6,8 @@ import java.util.ArrayList;
 
 import com.exec.model.Candidate;
 import com.exec.model.GBM;
-import com.exec.model.Admin;
 import com.exec.repository.CandidateRepository;
 import com.exec.repository.GBMRepository;
-import com.exec.repository.AdminRepository;
 import java.util.*;
 
 import org.springframework.context.annotation.Lazy;
@@ -21,20 +19,14 @@ public class CandidateService {
 
     private final CandidateRepository candidateRepository;
     private final GBMRepository gbmRepository;
-    private final AdminRepository adminRepository;
 
-    public CandidateService(CandidateRepository candidateRepository, GBMRepository gbmRepository,AdminRepository adminRepository){
+    public CandidateService(CandidateRepository candidateRepository, GBMRepository gbmRepository){
         this.candidateRepository = candidateRepository;
         this.gbmRepository = gbmRepository;
-        this.adminRepository=adminRepository;
     }
 
-    public void fileNomination(Candidate candidate){
-        //candidateRepository.insert(candidate);
-        Admin admin;
-        admin=adminRepository.findAll().get(0);
-        admin.CandidateRequests.put(candidate.roll_no,candidate);
-        adminRepository.save(admin);
+    public void addCandidate(Candidate candidate){
+        candidateRepository.insert(candidate);
     }
 
     public Candidate getCandidateByRoll(String roll_no) {
@@ -153,7 +145,7 @@ public class CandidateService {
     public void add_poster(String roll_no, String link){
         Candidate candidate = getCandidateByRoll(roll_no);
         if(candidate.is_activated == true){
-            candidate.poster_links.add(link);
+            candidate.poster_link = link;
             candidateRepository.save(candidate);
         }
         else{

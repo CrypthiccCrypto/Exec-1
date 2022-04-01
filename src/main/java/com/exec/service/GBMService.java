@@ -136,7 +136,17 @@ public class GBMService {
 
     public void set_applied_for_candidature(String roll_no){
         GBM gbm = getGBMByRoll(roll_no);
+        if(gbm.applied_for_candidature == false)
+            throw new RuntimeException("Already applied for candidature");
         gbm.applied_for_candidature = true;
+        gbmRepository.save(gbm);
+    }
+
+    public void remove_applied_for_candidature(String roll_no){
+        GBM gbm = getGBMByRoll(roll_no);
+        if(gbm.applied_for_candidature == false)
+            throw new RuntimeException("Did not apply for candidature");
+        gbm.applied_for_candidature = false;
         gbmRepository.save(gbm);
     }
    

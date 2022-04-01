@@ -288,7 +288,15 @@ public class GBMController {
             }
 
             try{
-                aspiringcandidateservice.applyCandidature(roll_no, Proposers, Seconders, body.get("manifesto"), body.get("post"));
+                String _response = aspiringcandidateservice.applyCandidature(roll_no, Proposers, Seconders, body.get("manifesto"), body.get("post"));
+                if(_response.equals("Proposer")){
+                    response.put("message", "Proposer not valid");
+                    return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
+                }
+                if(_response.equals("Seconder")){
+                    response.put("message", "Seconder not valid");
+                    return new ResponseEntity<Object>(response, HttpStatus.BAD_REQUEST);
+                }
             }
             catch(Exception E){
                 response.put("message", "Proposer / Seconder not found");
